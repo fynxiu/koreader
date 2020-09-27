@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# FYN: ugly name. Verify mac, if not then exit
 is_mac() {
     if [ "$(uname -s)" != "Darwin" ]; then
         echo "You need a mac to build this package"
@@ -14,17 +15,21 @@ if echo "${VERSION}" | grep -; then
     VERSION=${VERSION}_$(git describe HEAD | xargs git show -s --format=format:"%cd" --date=short)
 fi
 
+# FYN: :- set default value, eg: if ANDROID_ARCH is not defined, the value is arg.
 # Default Android build to arm.
 ANDROID_ARCH="${ANDROID_ARCH:-arm}"
 
 # Default to Android 4.0+; required for NDK 15 but with a custom NDK the strict minimum is 9.
 NDKABI=${NDKABI:-14}
+# TODO: FYN export ???
+# export makes the variable available to sub-processes???
 export NDKABI
 
 # Default android flavor
 ANDROID_FLAVOR=${ANDROID_FLAVOR:-rocks}
 export ANDROID_FLAVOR
 
+# FYN: ${1} first argument, -ne not equal, -n not emtpy string, -z empty string
 function assert_ret_zero() {
     if [ "${1}" -ne 0 ]; then
         if [ -n "${2}" ]; then
@@ -34,7 +39,11 @@ function assert_ret_zero() {
     fi
 }
 
+# FYN: check and sync and update submodules
 function check_submodules() {
+    # FYN: -q means silently, so we will not see the output
+    # but the condition is true
+    # -E extened regexp
     if git submodule status | grep -qE '^\-'; then
         kodev-fetch-thirdparty
     fi
