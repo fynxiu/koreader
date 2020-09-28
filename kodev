@@ -909,6 +909,9 @@ Supported commands:
     cov                 Run busted tests for coverage
     wbuilder            Run wbuilder.lua script (useful for building new UI widget)
 "
+
+# FYN: $# Expands to the number of positional parameters in decimal
+# FYN: && Short circuit
 [ $# -lt 1 ] && {
     echo "Missing command."
     echo "${HELP_MSG}"
