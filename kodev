@@ -896,7 +896,7 @@ HELP_MSG="
 usage: $0 COMMAND <ARGS>
 
 Supported commands:
-
+    trial               Trial for reading (# FYN: added)
     activate            Bootstrap shell environment for kodev
     build               Build KOReader
     clean               Clean KOReader build
@@ -919,18 +919,27 @@ Supported commands:
 }
 
 case "${1}" in
+    trial)
+        echo "trial something..."
+        shift 1
+        echo "$@"
+        ;;
     activate)
         echo "adding ${CURDIR} to \$PATH..."
         export PATH="${PATH}:${CURDIR}"
+        # FYN: luarocks path --bin return export statements
         eval "$(luarocks path --bin)"
+        # FYN: must run this to preserve the exported env
         exec "${SHELL}"
         ;;
     fetch-thirdparty)
         kodev-fetch-thirdparty
         ;;
     clean)
+        # FYN: shift [n], shift the positional parameters left by n
         shift 1
         kodev-clean "$@"
+        # FYN: ;; like break
         ;;
     build)
         shift 1
