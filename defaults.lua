@@ -4,6 +4,7 @@
 -- number of page turns between full screen refresh
 -- default to do a full refresh on every 6 page turns
 -- no longer needed
+-- FYN: mv to uimanager.lua DEFAULT_FULL_REFRESH_COUNT
 --DRCOUNTMAX = 6
 
 -- number of pages for hinting
@@ -12,6 +13,7 @@ DHINTCOUNT = 1
 
 -- full screen mode, 1 for true, 0 for false
 -- no longer needed
+-- FYN: useless koptoption.lua full_screen default_value 1
 --DFULL_SCREEN = 1
 
 -- scroll mode, 1 for true, 0 for false
