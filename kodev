@@ -838,6 +838,7 @@ OPTIONS:
     set -e
     check_submodules && kodev-build
     setup_env
+    # TODO: FYN: what does this mean? make "???/.busted"
     make "${EMU_DIR}/.busted"
     pushd "${EMU_DIR}" && {
         target=front
