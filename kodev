@@ -107,6 +107,7 @@ EOL
     GNUPLOT_PID=$!
 }
 
+# FYN: 提供 EMU_DIR, LD_LIBRARY_PATH, KODEBUG_SUFFIX
 function setup_env() {
     SETUP_ENV_GREP_COMMAND="grep -v debug"
     if [ -n "${KODEBUG}" ]; then
@@ -676,6 +677,7 @@ TARGET:
                     kodev-build
                 fi
             else
+                # FYN: 之所以只在这里运行，可能是由于kodev-build已经执行了setup_env, 奇葩的写法
                 setup_env
             fi
 
@@ -707,6 +709,7 @@ TARGET:
             echo "[*] Running KOReader with arguments: $*..."
             pushd "${EMU_DIR}" && {
                 if [ $# -lt 1 ]; then
+                    # FYN: default path after opened
                     args=${CURDIR}/test
                 else
                     args="$*"

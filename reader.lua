@@ -1,4 +1,5 @@
 #!./luajit
+-- FYN: shebang, useing ./ aims to local luajit first
 io.stdout:write([[
 ---------------------------------------------
                 launching...
