@@ -558,6 +558,7 @@ TARGET:
                 export KODEBUG=
                 ;;
             --gdb)
+                # TODO: FYN: How to debug?
                 if [ -n "${VALUE}" ]; then
                     gdb=${VALUE}
                 else
@@ -601,6 +602,7 @@ TARGET:
                 ;;
             -h | --screen-height)
                 # simple numeric check due to overlap between -h for help and height
+                # FYN: ##*[!0-9]* means all characters must be number
                 if [ -n "${VALUE##*[!0-9]*}" ]; then
                     screen_height=${VALUE}
                 else
