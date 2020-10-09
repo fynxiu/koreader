@@ -1,5 +1,10 @@
+--[[
+    FYN: this file is only for preferences dir fetch,
+    and has nothing to do with storage.
+--]]
 -- need low-level mechnism to detect android to avoid recursive dependency
 local isAndroid, android = pcall(require, "android")
+-- FYN: libkoreader-lfs.so
 local lfs = require("libs/libkoreader-lfs")
 
 local DataStorage = {}
@@ -7,6 +12,7 @@ local DataStorage = {}
 local data_dir
 local full_data_dir
 
+-- FYN: get dir with memo, if this dir doesn't exist, then mkdir it
 function DataStorage:getDataDir()
     if data_dir then return data_dir end
 
@@ -45,11 +51,13 @@ function DataStorage:getFullDataDir()
         full_data_dir = self:getDataDir()
     elseif self:getDataDir() == "." then
         full_data_dir = lfs.currentdir()
+    -- FYN: else missing, warning or
     end
 
     return full_data_dir
 end
 
+-- FYN: mkdir for all
 local function initDataDir()
     local sub_data_dirs = {
         "cache", "clipboard",
@@ -57,6 +65,7 @@ local function initDataDir()
         "history", "ota",
         "screenshots", "settings", "styletweaks",
     }
+    -- FYN: ipairs only integer key
     for _, dir in ipairs(sub_data_dirs) do
         local sub_data_dir = string.format("%s/%s", DataStorage:getDataDir(), dir)
         if lfs.attributes(sub_data_dir, "mode") ~= "directory" then

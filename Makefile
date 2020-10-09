@@ -1,13 +1,16 @@
 # koreader-base directory
+# FYN: ?= set only if it is nil
 KOR_BASE?=base
 
 # the repository might not have been checked out yet, so make this
 # able to fail:
+# FYN: with no error message https://www.gnu.org/software/make/manual/html_node/Include.html
 -include $(KOR_BASE)/Makefile.defs
 
 # We want VERSION to carry the version of the KOReader main repo, not that of koreader-base
 VERSION:=$(shell git describe HEAD)
 # Only append date if we're not on a whole version, like v2018.11
+# FYN: eg, v2020.09-54-ge3f92a8b should be transformed into v2020.09-54-ge3f92a8b_2020-10-07
 ifneq (,$(findstring -,$(VERSION)))
 	VERSION:=$(VERSION)_$(shell git describe HEAD | xargs git show -s --format=format:"%cd" --date=short)
 endif
@@ -16,8 +19,14 @@ endif
 IS_RELEASE := $(if $(or $(EMULATE_READER),$(WIN32)),,1)
 IS_RELEASE := $(if $(or $(IS_RELEASE),$(APPIMAGE),$(DEBIAN),$(MACOS)),1,)
 
+# ifeq ($(IS_RELEASE),1)
+# # FYN: this line should not indent
+# $(info release=$(IS_RELEASE))
+# endif
+
 ANDROID_ARCH?=arm
 # Use the git commit count as the (integer) Android version code
+# TODO FYN: why?
 ANDROID_VERSION?=$(shell git rev-list --count HEAD)
 ANDROID_NAME?=$(VERSION)
 
@@ -69,6 +78,7 @@ DOCKER:=$(shell grep -q docker /proc/1/cgroup 2>/dev/null && echo 1)
 INSTALL_FILES=reader.lua setupkoenv.lua frontend resources defaults.lua datastorage.lua \
 		l10n tools README.md COPYING
 
+# TODO: FYN: this luajit is not luajit interpreter?
 all: $(if $(ANDROID),,$(KOR_BASE)/$(OUTPUT_DIR)/luajit)
 	$(MAKE) -C $(KOR_BASE)
 	install -d $(INSTALL_DIR)/koreader
@@ -365,7 +375,7 @@ androidupdate: all
 		-xr!*COPYING$ \
 		-xr!*README.md$ \
 		-xr!git$ \
-		-xr!gitiginore$ 
+		-xr!gitiginore$
 
 	# make the android APK
 	$(MAKE) -C $(ANDROID_LAUNCHER_DIR) $(if $(KODEBUG), debug, release) \
